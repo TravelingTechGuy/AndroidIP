@@ -1,108 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
-	<meta name="generator" content="TextMate http://macromates.com/">
-	<meta name="author" content="Guy Vider">
-	<title>jqMobileTest</title>
-	<!-- Date: 2011-04-26 -->
-	<link rel="stylesheet" href="css/jquery.mobile-1.0a4.1.min.css" />
-	<script type="text/javascript" charset="utf-8" src="js/phonegap.0.9.5.js"></script>
-	<script type="text/javascript" charset="utf-8" src="js/jquery-1.5.2.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0a4.1.min.js"></script>
-	<script type="text/javascript" charset="utf-8">
-		$(document).ready(function() {
-			getIP();
-		});
-		
-		function getIP() {
-			$("#result").html("");
-			var result;
-			var serviceUrl = "http://www.travelingtechguy.com/php/myip.php?type=jsonp&callback=?";
-			$.mobile.pageLoading();
-			$.ajax({
-			  	url: serviceUrl,
-				dataType: 'jsonp',
-			  	success: function(data) {
-					$.mobile.pageLoading(true);
-					if(data) {
-						displayResult(data);
-						//dumpData(data);
-					}
-					else {
-						displayError("Could not get IP address");
-					}
-				},
-			  	error: function(jqXHR, textStatus, errorThrown) {
-					$.mobile.pageLoading(true);
-					displayError(errorThrown);
-				}	
-			});
-		}
-		
-		function displayError(error) {
-			$("#result").html("<strong>Error occurred: " + error + "</strong>");
-		}
-		
-		function displayResult(data) {
-			var items = [];
-			if(data.Status == 'OK') {
-				items.push('<li><strong>External IP</strong>:&nbsp;' + data.Ip + '</li>');
-				if(data.City)
-					items.push('<li><strong>City</strong>:&nbsp;' + data.City + '</li>');
-				if(data.RegionName)
-					items.push('<li><strong>Region</strong>:&nbsp;' + data.RegionName + '</li>');
-				if(data.CountryName)
-					items.push('<li><strong>Country</strong>:&nbsp;' + data.CountryName + '</li>');
-				if(data.ZipPostalCode)
-					items.push('<li><strong>Zip</strong>:&nbsp;' + data.ZipPostalCode + '</li>');
-				if(data.Gmtoffset) {
-					var offset = parseInt(data.Gmtoffset) / 3600;
-					if(data.Isdst == '1')
-						offset += (offset > 0) ? 1 : -1;
-					items.push('<li><strong>GMT Offset</strong>:&nbsp;' + offset + '</li>');
-				}
-				if(data.Latitude && data.Longitude)
-					items.push('<li><strong>Coordinates (Lat,Long)</strong>:&nbsp;(' + data.Latitude + ',' + data.Longitude + ')</li>');
-					
-				$("#result").html($('<ul/>', {
-					'class': 'my-new-list',
-					html: items.join('')
-				}));
-			}
-		}
-		
-		function dumpData(data) {
-			var items = [];
-
-			$.each(data, function(key, val) {
-				items.push('<li><strong>' + key + '</strong>:&nbsp;' + val + '</li>');
-			});
-
-			$("#result").html($('<ul/>', {
-			    'class': 'my-new-list',
-			    html: items.join('')
-			}));
-		}
-	</script>
-</head>
-<body>
-	<div data-role="page"> 
-		<div data-role="header"> 
-			<h3>GeoInfo by IP</h3> 
-		</div> 
-	
-		<div data-role="content">
-			<div id="result">
-			</div>
-		</div>
-
-		<div data-role="footer" class="ui-bar" data-id="myfooter">
-			<a href="javascript:getIP();" data-role="button" data-icon="refresh">Refresh</a>
-			<a href="about.html" data-role="button" data-icon="info">About</a>
-			<a href="settings.html" data-role="button" data-icon="gear">Settings</a>
-		</div>
-	</div>
-</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+        <meta name="generator" content="TextMate http://macromates.com/">
+        <meta name="author" content="Guy Vider">
+        <title>Get IP info</title>
+        <!-- Date: 2011-04-26 -->
+        <link rel="stylesheet" href="css/jquery.mobile-1.0a4.1.min.css" />
+        <script type="text/javascript" charset="utf-8" src="js/phonegap.0.9.5.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/jquery-1.5.2.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0a4.1.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/geoinfo.js"></script>
+    </head>
+    <body>
+        <div data-role="page"> 
+            <div data-role="header"> 
+                <h3>GeoInfo by IP</h3> 
+            </div> 
+            
+            <div data-role="content">
+                <div id="result">
+                </div>
+            </div>
+            
+            <div data-role="footer" class="ui-bar" data-id="myfooter">
+                <a href="javascript:getIP();" data-role="button" data-icon="refresh">Refresh</a>
+                <a href="about.html" data-role="button" data-icon="info">About</a>
+                <a href="settings.html" data-role="button" data-icon="gear">Settings</a>
+            </div>
+        </div>
+    </body>
 </html>
