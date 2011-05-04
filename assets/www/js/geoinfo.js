@@ -1,4 +1,4 @@
-window.addEventListener('deviceready', function () {
+$(document).ready(function () {
     getIP();
 });
 
