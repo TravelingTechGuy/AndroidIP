@@ -14,7 +14,8 @@ function getIP() {
             $.mobile.pageLoading(true);
             if(data) {
                 displayResult(data);
-                //dumpData(data);
+                //saveResult(data);
+				//dumpData(data);
             }
             else {
                 displayError("Could not get IP address");
@@ -31,31 +32,41 @@ function displayError(error) {
     $("#result").html("<strong>Error occurred: " + error + "</strong>");
 }
 
+function saveResult(result) {
+	var key = localStorage.length;
+	result.Date = new Date();
+	localStorage[key] = result;
+}
+
 function displayResult(data) {
     var items = [];
     if(data.Status == 'OK') {
-        items.push('<li><strong>External IP</strong>:&nbsp;' + data.Ip + '</li>');
+        items.push('<li>External IP:<p class="ui-li-aside">' + data.Ip + '</p></li>');
         if(data.City)
-        items.push('<li><strong>City</strong>:&nbsp;' + data.City + '</li>');
+        	items.push('<li>City:<p class="ui-li-aside">' + data.City + '</p></li>');
         if(data.RegionName)
-        items.push('<li><strong>Region</strong>:&nbsp;' + data.RegionName + '</li>');
+        	items.push('<li>Region:<p class="ui-li-aside">' + data.RegionName + '</p></li>');
         if(data.CountryName)
-        items.push('<li><strong>Country</strong>:&nbsp;' + data.CountryName + '</li>');
+        	items.push('<li>Country:<p class="ui-li-aside">' + data.CountryName + '</p></li>');
         if(data.ZipPostalCode)
-        items.push('<li><strong>Zip</strong>:&nbsp;' + data.ZipPostalCode + '</li>');
+        	items.push('<li>Zip:<p class="ui-li-aside">' + data.ZipPostalCode + '</p></li>');
         if(data.Gmtoffset) {
             var offset = parseInt(data.Gmtoffset) / 3600;
             if(data.Isdst == '1')
             offset += (offset > 0) ? 1 : -1;
-            items.push('<li><strong>GMT Offset</strong>:&nbsp;' + offset + '</li>');
+            items.push('<li>GMT Offset:<p class="ui-li-aside">' + offset + '</p></li>');
         }
-        if(data.Latitude && data.Longitude)
-        items.push('<li><strong>Coordinates (Lat,Long)</strong>:&nbsp;(' + data.Latitude + ',' + data.Longitude + ')</li>');
+        if(data.Latitude && data.Longitude) {
+			var coor = data.Latitude + ',' + data.Longitude;
+			var gmapUrl = 'http://maps.google.com/maps?q=' + coor;
+        	items.push('<li><a target="_blank" href="' + gmapUrl + 
+				'">Coordinates (Lat, Long):<p class="ui-li-aside">(' + coor + ')</p></a></li>'
+			);
+		}
         
-        $("#result").html($('<ul/>', {
-            'class': 'my-new-list',
-            html: items.join('')
-        }));
+        //$("#result").html('<ul id="myList">' + items.join('') + '</ul>');
+		$("ul").html(items.join(''));
+		$("ul").listview('refresh');
     }
 }
 

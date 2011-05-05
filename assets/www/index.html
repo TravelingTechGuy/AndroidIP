@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width,  height=device-height, minimum-scale=1, maximum-scale=1">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
 		<meta name="author" content="Guy Vider">
 		<title>IPInfo</title>
 		<!-- Date: 2011-04-26 -->
@@ -14,19 +14,19 @@
 	</head>
     <body>
         <div data-role="page"> 
-            <div data-role="header"> 
+            <div data-role="header" data-position="fixed" data-theme="b"> 
                 <h3>GeoInfo by IP</h3> 
             </div> 
             
             <div data-role="content">
-                <div id="result">
-                </div>
+            	<ul data-role="listview" data-theme="c" />
             </div>
             
-            <div data-role="footer" class="ui-bar">
+            <div data-role="footer" class="ui-bar" data-position="fixed" data-theme="b">
                 <a href="javascript:getIP();" data-role="button" data-icon="refresh">Refresh</a>
-                <a href="about.html" data-role="button" data-icon="info">About</a>
-                <a href="settings.html" data-role="button" data-icon="gear">Settings</a>
+                <a href="javascript:saveResults();" data-role="button" data-icon="save">Save</a>
+				<a href="javascript:$.mobile.changePage('settings.html', 'slideup');" data-role="button" data-icon="gear">Settings</a>
+				<a href="javascript:$.mobile.changePage('about.html', 'slideup');" data-role="button" data-icon="info">About</a>
             </div>
         </div>
     </body>
