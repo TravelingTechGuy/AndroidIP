@@ -1,7 +1,3 @@
-$(document).ready(function () {
-    getIP();
-});
-
 function getIP() {
     $("#result").html("");
     var result;
@@ -13,7 +9,9 @@ function getIP() {
         success: function(data) {
             $.mobile.pageLoading(true);
             if(data) {
-                displayResult(data);
+				data.Date = new Date();
+				resultFromServer = displayResult(data);
+                $("#result").html(resultFromServer);
                 //saveResult(data);
 				//dumpData(data);
             }
@@ -29,45 +27,44 @@ function getIP() {
 }
 
 function displayError(error) {
-    $("#result").html("<strong>Error occurred: " + error + "</strong>");
-}
-
-function saveResult(result) {
-	var key = localStorage.length;
-	result.Date = new Date();
-	localStorage[key] = result;
+    $("#result").attr('color', 'red').html("<strong>" + error + "</strong>");
 }
 
 function displayResult(data) {
     var items = [];
     if(data.Status == 'OK') {
-        items.push('<li>External IP:<p class="ui-li-aside">' + data.Ip + '</p></li>');
+		items.push('<h3>' + formatItem('Date', data.Date) + '</h3>');
+		items.push('<p>');
+        items.push(formatItem('External IP', data.Ip));
         if(data.City)
-        	items.push('<li>City:<p class="ui-li-aside">' + data.City + '</p></li>');
+        	items.push(formatItem('City', data.City));
         if(data.RegionName)
-        	items.push('<li>Region:<p class="ui-li-aside">' + data.RegionName + '</p></li>');
+        	items.push(formatItem('Region', data.RegionName));
         if(data.CountryName)
-        	items.push('<li>Country:<p class="ui-li-aside">' + data.CountryName + '</p></li>');
+        	items.push(formatItem('Country', data.CountryName));
         if(data.ZipPostalCode)
-        	items.push('<li>Zip:<p class="ui-li-aside">' + data.ZipPostalCode + '</p></li>');
+        	items.push(formatItem('Zip', data.ZipPostalCode));
         if(data.Gmtoffset) {
             var offset = parseInt(data.Gmtoffset) / 3600;
-            if(data.Isdst == '1')
-            offset += (offset > 0) ? 1 : -1;
-            items.push('<li>GMT Offset:<p class="ui-li-aside">' + offset + '</p></li>');
+            offset = (data.Isdst == '1') ? (offset + ((offset > 0) ? 1 : -1)) + " (DST)" : offset;
+            items.push(formatItem('GMT Offset', offset));
         }
         if(data.Latitude && data.Longitude) {
 			var coor = data.Latitude + ',' + data.Longitude;
 			var gmapUrl = 'http://maps.google.com/maps?q=' + coor;
-        	items.push('<li><a target="_blank" href="' + gmapUrl + 
-				'">Coordinates (Lat, Long):<p class="ui-li-aside">(' + coor + ')</p></a></li>'
-			);
+        	items.push(formatItem('Coordinates (Lat, Long)', '<a target="_blank" href="' + gmapUrl + '">(' + coor + ')</a>'));
 		}
-        
-        //$("#result").html('<ul id="myList">' + items.join('') + '</ul>');
-		$("ul").html(items.join(''));
-		$("ul").listview('refresh');
+		items.push('</p>');
+        return items.join('<br />');
     }
+	else {
+		return null;
+	}
+}
+
+function formatItem(name, value) {
+	result = "<strong>" + name + ":</strong>&nbsp;" + value;
+	return result;
 }
 
 function dumpData(data) {

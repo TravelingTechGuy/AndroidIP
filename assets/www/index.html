@@ -11,22 +11,41 @@
 		<script type="text/javascript" charset="utf-8" src="js/jquery-1.5.2.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0a4.1.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="js/geoinfo.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/db.js"></script>
+		<script type="text/javascript">
+			$("div[data-role*='page']").live('pageshow', function(event, ui) {
+			    switch($(this).jqmData().url) {
+					case "settings.html":
+						loadResults();
+						break;
+					case "about.html":
+						break;
+					default:       	//index page
+						getIP();
+						break;
+				}
+			});
+			
+			/*$('div:jqmData(url="settings.html")').live('pageshow',function(){
+			    
+			});*/
+		</script>
 	</head>
     <body>
         <div data-role="page"> 
             <div data-role="header" data-position="fixed" data-theme="b"> 
                 <h3>GeoInfo by IP</h3> 
+				<a href="javascript:$.mobile.changePage('about.html', 'slideleft');" data-role="button" class="ui-btn-right" data-icon="info">About</a>
             </div> 
             
             <div data-role="content">
-            	<ul data-role="listview" data-theme="c" />
+				<div id="result"></div>
             </div>
             
             <div data-role="footer" class="ui-bar" data-position="fixed" data-theme="b">
                 <a href="javascript:getIP();" data-role="button" data-icon="refresh">Refresh</a>
-                <a href="javascript:saveResults();" data-role="button" data-icon="save">Save</a>
-				<a href="javascript:$.mobile.changePage('settings.html', 'slideup');" data-role="button" data-icon="gear">Settings</a>
-				<a href="javascript:$.mobile.changePage('about.html', 'slideup');" data-role="button" data-icon="info">About</a>
+                <a href="javascript:saveResult();" data-role="button" data-icon="save">Save</a>
+				<a href="settings.html" data-role="button" data-icon="gear">Settings</a>
             </div>
         </div>
     </body>

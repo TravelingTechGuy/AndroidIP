@@ -10,15 +10,17 @@
 	<script type="text/javascript" charset="utf-8" src="js/phonegap.0.9.5.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/jquery-1.5.2.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.0a4.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/db.js"></script>
 </head>
 <body>
 	<div data-role="page" data-position="fixed" data-theme="b"> 
 		<div data-role="header"> 
-			<h3>Settings</h3> 
+			<h3>Settings</h3>
+			<a href="javascript:$.mobile.changePage('about.html', 'slideleft');" data-role="button" class="ui-btn-right" data-icon="info">About</a>
 		</div> 
 	
 		<div data-role="content">
-			<ul id="results" data-role='listview' data-theme='c' />
+			<ul id="results" data-role="listview" data-theme="c" />
 		</div>
 		
 		<div data-role="footer" class="ui-bar" data-position="fixed" data-theme="b">
